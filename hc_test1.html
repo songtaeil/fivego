@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Highcharts (w3big.com)</title>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://code.highcharts.com/stock/5.0.14/highstock.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+</head>
+<body>
+<div id="goToDesign" style="width: 550px; height: 100px; margin: 0 auto; background-color:lightblue"></div>
+<div id="container" style="width: 550px; height: 400px; margin: 0 auto; background-color:lightblue"></div>
+<script language="JavaScript">
+$(function() {
+   var schart = new Highcharts.StockChart({
+      chart: {
+        renderTo: "container",
+        spacingTop: 5,
+        events: {
+          load: function(event) {
+            setTimeout(function () {
+              schart.hideLoading();
+              var dataobj = schart.series[0].data;
+              alert(dataobj.length);
+            }, 500);
+          }
+        },
+      },
+      title:{
+        text: 'my Chart'},
+      series: [{
+        type: 'area',
+        name: 'line',
+        data:[0.1,2.4,0.8,2.6,3.3,4,1.8,6.4,3.4,-2.1,-4,-1.8,-5.1,-7.1,-6,-4.8,-2.7,-2.8,-3.7,-6.9,-6.6,-9.8,-9.1,-7.9,-4.8,-1.6,-3.3,0.1,-3.4,-7.5
+          ,-4.3,-3.5,-0.3,-0.8,1.6,-0.5,-2.5,-1.9,-3.7,-5.3,-4.5,-3,-2,-1.2,-0.6,4.1,3.9,-0.9,1.3,0.6,-1,1.3,0.5,-0.3,1.5,2.6,2.6,3.8
+          ,4,2.8,2.1,4,4.5,1.8,-0.1,0.5,3.8,4.2,5.8,7.5,7.7,5.6,5.3,5.7,7,8.8,8.7,8.7,7.2,6.9,8.9,7.6,6.5,6.5,5.7,5.7,8.1,10.3,7.9
+          ,7.6,7.6,10.3,12.6,12.2,12.9,15.3,15.5,14,14.6,14.6,12.4,12.1,13,15.7,18,13.5,11.3,12.5,12.9,12.8,14.5,14.2,14.3,16.2,16.2,13.6,14.5,15.9,19.3
+          ,19.7,19.4,20.4,20.9,21.7,15.3,15.5,16.9,15.8,16.4,17.5,18.3,16.4,16,15.7,17.1,19.2,19.7,20.4,20.4,21,21.1,19.2,21.5,19.1,17.4,18.7,20.3,22.9,22.9,22.1
+          ,22,20.3,20.4,20.7,22.2,18.3,17.6,20.6,20.9,20.9,21.4,21.6,19.1,21.2,22.6,24.3,24.2,24.8,24.6,25.5,25.1,25,26.9,23.8,23.3,23.6,24.6,25.7,25.8,26.5
+          ,24.3,25.1,25.9,27.1,27.1,27.1,26,25.8,26,24.5,26.8,27.6,26.1,26.3,24.4,25.2,26,25.4,27.6,28.5,28.6,27.6,26.3,26.5,29.3,26.9,25.4,24.3,26,26.7,24.2
+          ,27.1,28.5,27.8,28.4,29.9,28.9,29,26.4,25,24.2,26.3,26.2,25.1,24.4,22.3,22.3,24.4,24.4,24.5,23.6,24.3,26.7,25.8,26.2,25.1,21.9,20.6,20.8,20.3,17.7,20.1
+          ,20.8,21.1,21.4,21.5,19.6,19.5,21.4,22.5,21.6,21.3,20.4,20,19,19.3,21.3,19.2,21.4,20.1,19.6,18.6,16.9,18.1,19,20.6,21.9,21.8,21.1,19.3,14.1,16.1
+          ,16,20.2,18.2,16.5,16.3,16.5,20.3,21.2,20.7,20.1,16.7,12.2,11.3,12.8,13.4,15.4,14.5,15.1,15.5,14.3,13.9,14.2,12.1,11.3,10.9,12.6,14.5,14.1,11,6.6,6.5
+          ,11.1,13.6,11.5,7.6,5.4,8.1,11.5,12.6,7.3,7.7,5.3,2.8,5.5,5.8,2.6,0.6,1,-0.5,-1.5,-0.5,-1.4,1.6,0.2,-0.4,0.9,3.5,0.7,3.8,4.9,-0.8
+          ,-1.9,-0.2,2.1,-0.2,-4.2,-1.2,1.3,-3.1,-2.2,0,-6,-9,-8.7,-8.6,-5.1,-4.4,-7.1,-4.5, -6.2,-2.3,-0.4,2.7,1.7,-1.9,-4.3,-7,-3.8,0.4,0.2,0.9]
+}],
+      navigator:{
+        enabled: true,
+        series:{
+          type : 'area'
+        }
+      },
+      yAxis:{
+        min: -30,
+        max: 50,
+        minRange: 10,
+        tickInterval: 5
+      },
+      xAxis:{
+        minRange: 1,
+        tickLength:5,
+        events: {
+          setExtremes: function (e) {
+          					if (e.trigger === "navigator") {
+          						setPoint(e.min);
+
+          					}
+          				}
+        },
+        labels:{
+          enabled :true,
+          scalable: true,
+          formatter: function(){
+            Highcharts.setOptions({
+              global: {
+                useUTC: true
+              }
+            });
+            return Highcharts.dateFormat('%b %d, %Y<br>%I:%M %p', this.value*24*3600*1000*30);
+          },
+          style: {
+  					fontSize: '10px',
+  					fontFamily: '맑은 고딕',
+  					whiteSpace: 'nowrap',
+  					padding: '[100px 100px 100px 100px]'
+				  }
+        }
+      },
+      scrollbar: {
+        barBackgroundColor: '#eee',
+        barBorderWidth: 0,
+        buttonBackgroundColor: 'none',
+        buttonBorderWidth: 0,
+        trackBackgroundColor: 'none',
+        trackBorderColor: '#CCC',
+        enabled: true
+      },
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+            //fillColor: '#00ff00', //마우스 오버시에도 보임
+            //radius: 2,
+            //symbol: 'triangle'
+          },
+          dataGrouping: {
+            enabled: false
+          },
+          allowPointSelect: true  //다수의 선택도 가능
+        },
+        tisong: {
+          color: '#ff0000',
+          dataGrouping: {
+            enabled: false
+          }
+        },
+        area: {
+          fillColor: {
+					linearGradient: {
+						x1: 0,
+						y1: 0,
+						x2: 0,
+						y2: 1
+					},
+					stops: [
+						[0, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
+						[1, Highcharts.getOptions().colors[0]]
+					]
+				},
+          dataGrouping: {
+            enabled: false
+          }
+        }
+		  },
+      tooltip: {
+  			enabled: false,
+        animation: true,
+        backgroundColor: '#ff0000',
+  			borderColor: '#e8e8e8',
+  			borderRadius: 1,
+  			borderWidth: 1,
+        crosshairs: true,
+  			color: '#e8e8e8',
+  			formatter: function () {
+  				return Highcharts.dateFormat('%b %d', this.x*24*3600*1000) + " : " + this.y;
+  			}
+      },
+      rangeSelector: {
+        enabled : false
+      },
+      exporting: {
+        enabled: false
+      },
+      legend: {
+        enabled: true
+      }
+   }, function (playChart) {
+		var renderer = playChart.renderer;
+		renderer.rect(9, 60, 2, 180, 0).attr({
+			id: 'playBar',
+			fill: '#ff0000 ',
+			opacity: "0.5",
+			zIndex : "100000"
+		}).add();
+		renderer.rect(7, 40, 6, 20, 0).attr({
+			id: 'playPoint',
+			fill: '#ff0000 ',
+			opacity: "0.5",
+			zIndex : "100001"
+		}).add();
+	});
+
+});
+
+function setPoint(min){
+  $('#goToDesign').text(min);
+}
+</script>
+</body>
+</html>
