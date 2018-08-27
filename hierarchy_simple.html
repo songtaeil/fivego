@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Hierarchy examples</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+div {
+  margin: 20px;
+}
+
+div span {
+  font-weight: bold;
+}
+
+
+.list-type{
+position: relative;
+display: block;
+padding: .4em .4em .4em 2em;
+*padding: .4em;
+margin: .5em 0;
+background: #93C775;
+color: #000;
+text-decoration: none;
+-moz-border-radius: .3em;
+-webkit-border-radius: .3em;
+border-radius: 10em;
+transition: all .2s ease-in-out;
+}
+.over{
+  background: #aaa;
+}
+</style>
+
+<body>
+  <div id="content"></div>
+<svg width=1000 height=1000><g></g></svg>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+  <script>
+var data = {
+  "name": "A1",
+  "children": [
+    {
+      "name": "B1",
+      "value": 100,
+      "children": [
+        {
+          "name": "C1",
+          "value": 100
+        },
+        {
+          "name": "C2",
+          "value": 300
+        },
+        {
+          "name": "C3",
+          "value": 200
+        }
+      ]
+    },
+    {
+      "name": "B2",
+      "value": 200
+    }
+  ]
+};
+
+var root = d3.hierarchy(data);
+var tree = d3.pack();
+tree.size([500, 500]);
+
+root.sum(function(d){ return d.value;});
+
+tree(root);
+
+d3.select('svg g')
+  .selectAll('circle')
+  .data(root.descendants())
+  .enter()
+  .append('circle')
+  .attr('fill', 'cadetblue')
+  .attr('stroke', 'white')
+  .attr('cx', function(d){return d.x;})
+  .attr('cy', function(d){return d.y;})
+  .attr('r', function(d){return d.r;})
+
+d3.select('svg g')
+  .selectAll('text')
+  .data(root.leaves())
+  .enter()
+  .append('text')
+  .attr('stroke', 'black')
+  .attr('x', function(d){return d.x;})
+  .attr('y', function(d){return d.y;})
+  .text(function(d){ return d.data.name + ":" + d.data.value});
+
+  </script>
+</body>
+</html>

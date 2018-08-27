@@ -1,0 +1,163 @@
+<html>
+<body>
+
+  <link rel="stylesheet" href="css/pure-css-select-style.css">
+  <link rel="stylesheet" href="css/two_five.css">
+  <style type="text/css">
+  .inline_p
+  {
+    width: 100px;
+    align: center;
+    display: inline-block;
+    background-color:yellow;
+    padding: 5px;
+    border: 5px solid white;
+    border-radius: 15px;
+  }
+
+  </style>
+
+  <!--<button onClick="sort();">Sort</button>-->
+
+  <div class="pure-css-select-style theme-gradient inline_p">
+    <select id="year">
+    </select>
+  </div>
+  <div class="pure-css-select-style theme-gradient inline_p">
+    <select id="month">
+    </select>
+  </div>
+  <div class="pure-css-select-style theme-gradient inline_p">
+    <select id="day">
+    </select>
+  </div>
+  <div class="pure-css-select-style theme-gradient inline_p">
+    <select id="time">
+    </select>
+  </div>
+
+<table class="table-style-one"><tr id="sky"></tr><tr id="tor"></tr></table>
+
+</body>
+
+
+
+
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script>
+var sky = [
+{'name' : 'gab', 'simbol' : '甲', 'color' : 1, 'direction' : 1},
+{'name' : 'ul', 'simbol' : '乙', 'color' : 1, 'direction' : 0},
+{'name' : 'byung', 'simbol' : '丙', 'color' : 2, 'direction' : 1},
+{'name' : 'jung', 'simbol' : '丁', 'color' : 2, 'direction' : 0},
+{'name' : 'mu', 'simbol' : '戊', 'color' : 3, 'direction' : 1},
+{'name' : 'ki', 'simbol' : '己', 'color' : 3, 'direction' : 0},
+{'name' : 'kyung', 'simbol' : '庚', 'color' : 4, 'direction' : 1},
+{'name' : 'sin', 'simbol' : '辛', 'color' : 4, 'direction' : 0},
+{'name' : 'lim', 'simbol' : '壬', 'color' : 5, 'direction' : 1},
+{'name' : 'gae', 'simbol' : '癸', 'color' : 5, 'direction' : 0}];
+
+var tor = [
+{'name' : 'ja', 'simbol' : '子', 'color' : 5, 'direction' : 1},
+{'name' : 'chouk', 'simbol' : '丑', 'color' : 3, 'direction' : 0},
+{'name' : 'in', 'simbol' : '寅', 'color' : 1, 'direction' : 1},
+{'name' : 'myo', 'simbol' : '卯', 'color' : 1, 'direction' : 0},
+{'name' : 'jin', 'simbol' : '辰', 'color' : 3, 'direction' : 1},
+{'name' : 'sa', 'simbol' : '巳', 'color' : 2, 'direction' : 0},
+{'name' : 'oh', 'simbol' : '午', 'color' : 2, 'direction' : 1},
+{'name' : 'mi', 'simbol' : '未', 'color' : 3, 'direction' : 0},
+{'name' : 'sin', 'simbol' : '申', 'color' : 4, 'direction' : 1},
+{'name' : 'you', 'simbol' : '酉', 'color' : 4, 'direction' : 0},
+{'name' : 'sul', 'simbol' : '戌', 'color' : 5, 'direction' : 1},
+{'name' : 'hea', 'simbol' : '亥', 'color' : 5, 'direction' : 0}];
+
+var dayLong = [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
+
+function fiveColor(color){
+  switch(color){
+    case 1: return "green"; break;
+    case 2: return "red"; break;
+    case 3: return "yellow"; break;
+    case 4: return "white"; break;
+    case 5: return "black"; break;
+  }
+}
+
+d3.select("body table tr#sky").selectAll("td").data(sky).enter().append("td").style("BACKGROUND", function(d){
+  return fiveColor(d.color);
+}).html(function(d){
+  if(d.direction)
+    return "<span class='white-stroke'>" + d.simbol + "</span>";
+  else
+    return "<span class='black-stroke'>" + d.simbol + "</span>";
+});
+
+d3.select("body table tr#tor").selectAll("td").data(tor).enter().append("td").style("BACKGROUND", function(d){
+  return fiveColor(d.color);
+}).html(function(d){
+  if(d.direction)
+    return "<span class='white-stroke'>" + d.simbol + "</span>";
+  else
+    return "<span class='black-stroke'>" + d.simbol + "</span>";
+});
+
+d3.select("select#year").selectAll("option").data(range(1900, 120)).enter().append("option").attr("value", function(d){return d;}).text(function(d){return d + " 년";});
+d3.select("select#month").selectAll("option").data(range(1, 12)).enter().append("option").attr("value", function(d){return d;}).text(function(d){return d + " 월";});
+d3.select("select#day").selectAll("option").data(range(1, 31)).enter().append("option").attr("value", function(d){return d;}).text(function(d){return d + " 일";});
+d3.select("select#time").selectAll("option").data(range(1, 24)).enter().append("option").attr("value", function(d){return d;}).text(function(d){return d + " 시";});
+
+d3.select("select#year").on("change", onChangeYear);
+d3.select("select#month").on("change", onChangeMonth);
+d3.select("select#day").on("change", onChangeDay);
+
+function sort() {
+  d3.selectAll('td')
+    .sort(function(a, b) {
+      return b.color - a.color;
+    });
+}
+
+function range(start, count) {
+  return Array.apply(0, Array(count))
+    .map(function (element, index) {
+      return index + start;
+    });
+}
+
+function onChangeYear(){
+    iYear = d3.select('select#year').property('value');
+    yGan = (iYear%10+7)%10-1;
+    yJi = (iYear%12+9)%12-1;
+
+    alert(sky[yGan].simbol + tor[yJi].simbol);
+}
+
+function onChangeMonth(){
+  if(typeof iYear === "undefined"){
+    alert("년주 부터 세우시기 바랍니다.")
+    return;
+  }
+
+  iMonth = d3.select('select#month').property('value');
+  mGan = (((yGan%5)*2+2)%10+(iMonth-1))%10-1;
+  mJi = ((iMonth-1)+2)%12-1;
+  alert(sky[yGan].simbol + tor[yJi].simbol + "년 " + sky[mGan].simbol + tor[mJi].simbol + "월 ");
+}
+
+function onChangeDay(){
+  if(typeof iYear === "undefined"){
+    if(typeof iMonth === "undefined"){
+      alert("월주 부터 세우시기 바랍니다.")
+      return;
+    }
+    alert("년주 부터 세우시기 바랍니다.")
+    return;
+  }
+  iDay = d3.select('select#day').property('value');
+  dYear = (iYear-1900)*5 + Math.floor((iYear-1900)/4);
+  dGan = (Math.floor(dYear)+dayLong[iMonth-2]+Math.floor(iDay)-1)%10;
+  dJi = (Math.floor(dYear)+dayLong[iMonth-2]+Math.floor(iDay)-1+10)%12;
+
+    alert(sky[dGan].simbol + tor[dJi].simbol);
+}
+</script>

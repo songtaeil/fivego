@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<style>
+
+
+body {
+  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 10px;
+}
+</style>
+<body>
+    <label><input class="sizeSelect" type="radio" name="mode" value="size" checked /> Size</label>
+    <label><input class="sizeSelect" type="radio" name="mode" value="scale" checked /> Scale</label>
+    <label><input class="sizeSelect"  type="radio" name="mode" value="count" /> Count</label>
+    <svg></svg>
+
+    <div id="desc" style="height:100px; background-color: #f01010"></div>
+    <div id="desc2" style="height:100px; background-color: #10f010"></div>
+    <div id="desc3" style="height:100px; background-color: #1010f0"></div>
+    <div id="desc4" style="height:100px; background-color: #f010f0"></div>
+
+</body>
+
+<script>
+    // JSON data
+    var nodeData = {
+        "name": "TOPICS", "children": [{
+            "name": "Topic A",
+            "children": [{"name": "Sub A1", "size": 4, "cnt": 1}, {"name": "Sub A2", "size": 4, "cnt": 2}]
+        }, {
+            "name": "Topic B",
+            "children": [{"name": "Sub B1", "size": 7, "cnt": 3}, {"name": "Sub B2", "size": 6, "cnt": 4}, {"name": "Sub B3", "size": 4, "cnt": 5}]
+        }, {
+            "name": "Topic C",
+            "children": [{"name": "Sub C1", "size": 4, "cnt": 6}, {"name": "Sub C2", "size": 4, "cnt": 7}]
+        }]
+    };
+
+    var schemeColor20 = [
+          '#e7969c','#7b4173','#a55194','#ce6dbd','#de9ed6',
+          '#00ffff','#b5cf6b','#cedb9c','#8c6d31','#bd9e39',
+          '#e7ba52','#e7cb94','#843c39','#ad494a','#d6616b',
+          '#e7969c','#7b4173','#a55194','#ce6dbd','#de9ed6'];
+
+    // Variables
+    var width = 500;
+    var height = 500;
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    //$("div#desc").text(color(145));
+    //$("div#desc").text(color("Topic B"));
+
+
+    // Create primary <g> element
+    var g = d3.select('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+
+    // Data strucure
+    var partition = d3.partition()
+        .size([2*Math.PI, radius]);
+
+    function t(t){
+      var o=t.height+1;
+      return
+        t.x0=t.y0=r,
+        t.x1=n,
+        t.y1=e/o,
+        t.eachBefore(
+          function(t,n){
+            return function(e){
+              e.children&&qo( e,
+                              e.x0,
+                              t*(e.depth+1)/n,
+                              e.x1,
+                              t*(e.depth+2)/n);
+              var
+                i=e.x0,
+                o=e.y0,
+                u=e.x1-r,
+                a=e.y1-r;
+                u<i&&(i=u=(i+u)/2),
+                a<o&&(o=a=(o+a)/2),
+                e.x0=i,
+                e.y0=o,
+                e.x1=u,
+                e.y1=a
+            }
+          }(e,o)
+        ),
+        i&&t.eachBefore(Lo),
+        t;
+      }
+
+    //$("div#desc").text(partition(5)[1]);
+
+    // Find data root
+    var root = d3.hierarchy(nodeData)
+    .sum(function (d) {
+      $("div#desc3").text($("div#desc3").text() + "-(" + d.count + ")" + d.name);
+      return d.size
+    })
+    .sort(function(a,b){
+      $("div#desc4").text($("div#desc4").text() + "  :  [" + a.height + "] [" + a.depth  + "] [" + a.value + "]");
+      $("div#desc4").text($("div#desc4").text() + "/[" + b.height + "] [" + b.depth  + "] [" + b.value + "]");
+      return a.value - b.value;
+    })
+        ;
+
+    //$("div#desc").text(root);
+
+//<path display="none" d="
+
+/*
+  M 5.102694996447305e-15,-83.33333333333333A83.33333333333333,83.33333333333333,0,1,1,-5.102694996447305e-15,83.33333333333333A83.33333333333333,83.33333333333333,0,1,1,5.102694996447305e-15,-83.33333333333333Z" style="stroke: rgb(255, 255, 255); fill: rgb(255, 0, 0);"></path>
+  M
+    1.0164568432923031e-14,
+    -166
+  A
+    rx : 166,
+    ry : 166,
+    angle : 0,
+    large-arc-flag : 0,
+    sweep-flag : 1,
+    x : 150.94337285306315,
+    y :69.08037486682565
+  L
+    75.47168642653158,
+    34.540187433412825
+  A
+    83,
+    83,
+    0,
+    0,
+    0,
+    5.082284216461516e-15,
+    -83
+  Z" style="stroke: rgb(255, 255, 255); fill: rgb(255, 0, 0);"></path>
+
+*/
+    // Size arcs
+    partition(root);
+    var arc = d3.arc()
+        .startAngle(function (d) { d.x0s = d.x0; return d.x0; })
+        .endAngle(function (d) { d.x1s = d.x1; return d.x1; })
+        .innerRadius(function (d) { return d.y0; })
+        .outerRadius(function (d) { return d.y1; });
+
+    var slice = g.selectAll('g')
+      .data(root.descendants())
+      .enter().append('g').attr("class", "node");
+
+      slice.append('path')
+      .attr("display", function (d) { return d.depth ? null : "none"; })
+      .attr("d", arc)
+      .style('stroke', '#fff')
+      .style("fill", function (d) {
+        dd = d.children ? d : d.parent;
+        $("div#desc2").text($("div#desc2").text() + "-(" + dd.data.name + ")" + color(dd.data.name));
+        return color(dd.data.name); });
+
+
+    // Populate the <text> elements with our data-driven titles.
+    slice.append("text")
+      .attr("transform", function(d) {return "translate(" + arc.centroid(d) + ")rotate(" + computeTextRotation(d) + ")"; })
+      .attr("dx", "-20") // radius margin
+      .attr("dy", ".5em") // rotation align
+      .html(function(d) { return d.parent ? d.data.name + " <br>[" + d.data.size + "]" : "" });
+
+    function computeTextRotation(d) {
+        var angle = (d.x0 + d.x1) / Math.PI * 90;
+
+        // Avoid upside-down labels
+        return (angle < 120 ) ? angle + 270 : angle + 90;  // labels as rims
+        //return (angle < 180) ? angle - 90 : angle + 90;  // labels as spokes
+    }
+
+    d3.selectAll(".sizeSelect").on("click", function(d,i) {  // <-- 1
+
+        // Determine how to size the slices.
+        if (this.value === "size") {  // <-- 2
+          root.sum(function (d) { return d.size; });  // <-- 3
+          color = d3.scaleOrdinal(d3.schemeCategory20);
+        }else if (this.value === "scale") {  // <-- 2
+          root.sum(function (d) { return d.cnt; });  // <-- 3
+          color = d3.scaleOrdinal(d3.schemeCategory20b);
+        } else {  // <-- 2
+          root.count();  // <-- 4
+          color = d3.scaleOrdinal(d3.schemeCategory20c);
+        }
+        root.sort(function(a, b) { return b.value - a.value; });  // <-- 5
+
+        partition(root);  // <-- 6
+
+
+        slice.selectAll("path").transition().duration(750).attrTween("d", arcTweenPath);  // <-- 7
+        slice.selectAll("text").transition().duration(750).attrTween("transform", arcTweenText);  // <-- 8
+
+    });
+
+    function arcTweenPath(a, i) {
+
+        var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a);  // <-- 1
+        function tween(t) {  // <-- 2
+            var b = oi(t);  // <-- 3
+            a.x0s = b.x0;  // <-- 4
+            a.x1s = b.x1;  // <-- 4
+            return arc(b);  // <-- 5
+        }
+
+        return tween;  // <-- 6
+    }
+
+    function arcTweenText(a, i) {
+
+        var oi = d3.interpolate({ x0: a.x0s, x1: a.x1s }, a);
+        function tween(t) {
+            var b = oi(t);
+            return "translate(" + arc.centroid(b) + ")rotate(" + computeTextRotation(b) + ")";
+        }
+        return tween;
+    }
+</script>

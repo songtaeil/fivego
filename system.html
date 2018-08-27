@@ -1,0 +1,121 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="publicFunction.js" ></script>
+<script type="text/javascript" src="treeListManager.js" ></script>
+<script type="text/javascript">
+    var treeListManager;
+    var moduleId = "${moduleId}";
+	var gwSerialNo = "${gwSerialNo}";
+
+    $(function() {
+        $('.fold_btn').addClass('dim');
+
+        var systemId = $('#systemIdForm').val();
+        treeListManager = new TreeListManager(systemId, "treelist", treeItemClickCallback, treeListTrigger);
+
+        if (moduleId != null && moduleId != '') {
+        	console.log("sysetm.jsp" + moduleId + ", " + gwSerialNo );
+
+        	// get GW Serial Number in DOM tree //////////////////////////
+        	if(gwSerialNo == null || gwSerialNo == ''){
+        		var miNode = $('.treelist').find('span[data-moduleId="' + moduleId + '"]').closest('li');
+
+        		if(miNode.hasClass('indexfirst') || miNode.hasClass('indexonly')){
+        			gwSerialNo = miNode.prev().find('span').attr('data-moduleid');
+
+        		} else {
+            		gwSerialNo = miNode.prevAll('.indexfirst').first().prev().find('span').attr('data-moduleid');
+
+        		}
+        		console.log("get gwSerialNo in DOM tree : ", gwSerialNo);
+        	}
+        	//////////////////////////////////////////////
+
+            changeRightView("systemMicroinverter",moduleId, gwSerialNo);
+            setDefaultSelected(moduleId, 2);
+            $('.treelist').find('li').removeClass('selected');
+            $('.treelist').find('span[data-moduleId="' + moduleId + '"]').closest('li').addClass('selected');
+            setFromArray(moduleId);
+        } else {
+            changeRightView("systemOverall");
+            clip_vtype_toggle();
+            setDefaultSelected('${systemInfo.systemName}', 0);
+        }
+        $('.fold_btn').removeClass('dim');
+
+        //tabManage();
+        // tabMonitoringMenu();
+        // $('#tabSubmenu').find('button').removeClass('on');
+        // $('#tabSubmenu').find('button:contains("system")').addClass('on');
+        // $('#tabSubmenuM').find('button').removeClass('on');
+        // $('#tabSubmenuM').find('button:contains("system")').addClass('on');
+    });
+
+    function treeItemClickCallback() {
+        var pTree = treeListManager.pTree;
+
+        if (pTree.selectNode.depth === 0) {
+            var systemName = pTree.selectNode.name;
+            changeRightView("systemOverall");
+        } else if (pTree.selectNode.depth === 1) {
+            //gateway
+            var gwSerialNo = pTree.selectNode.name;
+            changeRightView("systemGateway",gwSerialNo);
+        } else if (pTree.selectNode.depth === 2) {
+            $('.index .selected').css("font-weight", "bold");
+            //microinverter
+            var miMac = pTree.selectNode.name;
+            var  gwSerialNo =  pTree.selectNode.parent.name;
+            changeRightView("systemMicroinverter",miMac, gwSerialNo);
+        }
+    }
+
+    function treeListTrigger(param) {
+        if (param!==undefined) {
+            $('.treelist').find('li').removeClass('selected');
+            $('.treelist').find("li:contains('"+ param + "')").addClass("selected");
+            console.log(param);
+            changeRightView(param.page, param.paramVal);
+        }
+    }
+
+    //End Tree List
+    function changeRightView(key,param,param2) {
+      //no action
+    }
+
+</script>
+<link href='lib/iconmoon/style.css' rel='stylesheet' />
+<link href='css/_style/style.css' rel='stylesheet' />
+<link href='css/_style/style_only_pc.css' />
+<link name='mobile_style' href='css/_style/mobile.css' rel='stylesheet' />
+<style>
+    .treelist li.selected span {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+</style>
+<div class="item-left system_view system_view2 mobile-hide" style="height: auto;margin-bottom: 20px;">
+    <div class="title-zone">
+        <div class="wrap">
+            <div>
+                <div>
+                    <span class="tit"><spring:message code="v2.installer.activatedSystem.label.tree.systemView"/></span>
+                    <button class="clip view-type"><i></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="input search2"> <i class="icon-search" id="pc-tree-searchIcon"></i>
+            <input type="text" placeholder="MI / EnerBox" id="pc-tree-search">
+            <button class="refresh_btn" id="pc-tree-searchRefresh">
+                <span class="icon-refresh"></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <div id="treelist" class="treelist"></div>
+    </div>
+</div>

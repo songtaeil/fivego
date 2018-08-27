@@ -1,0 +1,38 @@
+{"result": "OK",
+"data": {
+  "treeList": {
+    "system_name": "jangheeAll",
+    "event_yn": "N",
+    "gateways": [
+      {
+        "mis": [
+          {
+            "module_id": "Z00001052188",
+            "mac_address": "28D18E000089",
+            "gw_serial_no": "900JANG90930",
+            "event_yn": "N"
+          },
+          {
+            "module_id": "Z00001052189",
+            "mac_address": "28D18E000090",
+            "gw_serial_no": "900JANG90930",
+            "event_yn": "N"
+          }
+        ],
+        "gw_serial_no": "900JANG90930",
+        "event_yn": "N"
+      }
+    ],
+    "esslist": [
+      {
+          "ess_id": "ESS123456",
+          "ess_serial_no": "900JANG90901",
+          "event_yn": "N",
+          "pv" : "PV",
+          "battery" : "BATTERY",
+          "grid" : "GRID"
+    }
+  ]
+  }
+}
+}

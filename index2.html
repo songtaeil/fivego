@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Tree layout</title>
+  <style>
+    .chart div {
+      font: 10px sans-serif;
+      background-color: steelblue;
+      text-align: right;
+      padding: 3px;
+      margin: 1px;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+<p class="chart"></p>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/d3-scale.v2.min.js"></script>
+  <script>
+
+  var data = [100, 500, 1000, 1500, 2000, 2500];
+  var x = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([0, 420]);
+
+  var chart_p = d3.select(".chart");
+  var barList = chart_p.selectAll("div");
+  var barData = barList.data(data);
+  var barEntered = barData.enter().append("div");
+  barEntered.style("width", function(d) { return x(d) + "px";});
+  //barEntered.style("height", function(d) {return "20px";});
+  barEntered.style("height", "20px");
+
+  </script>
+
+</body>
+</html>

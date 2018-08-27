@@ -1,0 +1,23 @@
+{
+  "result": "OK",
+  "data": {
+    "treeList": {
+      "gateways": [
+        {
+          "mis": [
+            {
+              "module_id": "Z00001052188",
+              "mac_address": "28D18E000089",
+              "gw_serial_no": "900JANG90930",
+              "event_yn": "N"
+            }
+          ],
+          "gw_serial_no": "900JANG90930",
+          "event_yn": "N"
+        }
+      ],
+      "system_name": "jangheeAll",
+      "event_yn": "N"
+    }
+  }
+}

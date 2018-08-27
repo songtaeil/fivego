@@ -1,0 +1,28 @@
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+  function myTree(){
+    run();
+
+    function run(){
+      initD3(d3);
+    }
+    function initD3(d3){
+      d3.selectAll('#target').on('click', null);
+      alert("initd3");
+      d3.defaultTree = d3.defaultTree || {};
+      d3.defaultTree.tree = function () {
+          alert("default tree");
+          self.canvas = {};
+          self.canvas.createTreeList = function (defaultData, viewId) {
+            alert("hi");
+          }
+      }
+    }
+    d3.defaultTree.tree.addEventListener()
+  }
+
+  var tree = new myTree();
+</script>
+<body>
+  <div id="target">
+</body>

@@ -1,0 +1,24 @@
+
+<nodes data format>
+
+name                            <- treeList.system_name
+eventYn                         <- treeList.event_yn
+children                        <- []
+        - name                  <- gateways.gw_serial_no
+        - eventYn               <- gateways.event_yn
+        - product               <- "gateway"
+        - children              <- []
+                  - id          <- mi.module_id
+                  - name        <- mi.module_id
+                  - eventYn     <- mi.event_yn
+                  - addr        <- mi.mac_address
+                  - parent_name <- mi.gw_serial_no
+        - name                  <- ess.ess_serial_no
+        - eventYn               <- ess.event_yn
+        - product               <- "ess"
+        - childrenData          <- []
+                  - id          <- "PV" or "BATTERY" or "GRID"
+                  - name        <- "PV" or "BATTERY" or "GRID"
+                  - eventYn     <- "N"
+                  - addr        <- "PV" or "BATTERY" or "GRID"
+                  - parent_name <- ess.ess_serial_no

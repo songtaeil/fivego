@@ -1,0 +1,12 @@
+<html>
+<body>
+<svg><circle cx=100 cy=100 r=50></circle></svg>
+<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script>
+  d3.select('circle').attr('cx', function(d, i){
+    console.log(this.toString());
+    return 200;
+  });
+</script>
+</body>
+</html>

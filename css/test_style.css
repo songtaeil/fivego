@@ -1,0 +1,132 @@
+html, body, div {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+.content {
+/* 	-ms-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    transform: rotate(20deg); */
+}
+
+.array {
+	
+}
+
+.module{
+	
+}
+
+.rect {
+  fill: #ccffee;
+}
+
+.moduleRect{
+  fill: #DD7DFF;
+  opacity: 0.1;
+}
+
+/** .selected{
+    color: orange;
+}
+.node {
+    position: absolute;
+    list-style: none;
+    cursor: default;
+}
+.node span {
+    margin-right: 3px;
+}
+.node .caret {
+    font-size: 10px;
+}
+**/
+.selected .moduleRect{
+  fill: #FF0000;
+  opacity: 0.8;
+}
+
+.arraySelected {
+  fill-opacity: .1;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.canvas {
+	fill: #000000;
+}
+
+.blob {
+  fill: gray;
+}
+
+.rotate {
+    transform:rotate(30deg);
+  	transform-origin:left top;
+}
+
+/* .helper {
+  fill: white;
+  opacity: .3;
+} */
+
+text {
+  fill: black;
+  font-size: 5px;
+/*   font-size: 13px;
+  word-break:break-all; */
+}
+
+.blockText{
+  fill: black;
+  font-size: 3px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+button {
+   /* padding: 50px 50px; */ 
+}
+
+
+
+
+
+
+
+
+.canvas .wrapper.outer > .background {
+    fill: #000000;
+}
+.canvas .wrapper.inner > .background {
+    fill: #CCCCCC;
+    cursor: move;
+}
+.canvas .background {
+    fill: #F6F6F6;
+    stroke: #333333;
+    cursor: move;
+}
+.canvas .panCanvas {
+    cursor: move;
+}
+
+.canvas .minimap .frame .background {
+    stroke: #111111;
+    stroke-width: 4px;
+    fill-opacity: 0.4;
+    fill: #000000;
+    fill: url(#minimapGradient);
+    filter: url(#minimapDropShadow);
+    cursor: move;
+}
+
+
+

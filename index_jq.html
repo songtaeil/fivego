@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="./load.js"></script>
+  <script>
+    // this.status = "I am root";
+    // $(document).ready(function(){
+    //   $("#stat_ipt").val(this.status);
+    //   this.status = "I am function";
+    // })
+    // window.onLoad = function(){
+    //   $("#stat_ipt").val(this.status);
+    //   this.status = "I am window";
+    // }
+    function myKeyDown(){
+      //this.status = "you are not";
+      $("#stat_ipt").val(this.status);
+    }
+    function myClick(idx){
+      this.status = "clicked " + idx;
+      var self = this;
+      self.status = "self clicked " + idx;
+
+      makeTreeList();
+
+      function makeTreeList() {
+        $.ajax({
+          url: "https://10.177.204.35:4443/v2/installer/systems/202154/array-view/tree",
+          type: "get",
+          contentType: 'application/json;;charset=UTF-8',
+          dataType: 'json',
+          async: true,
+          success: function (obj) {
+              if (obj.result == "OK") {
+                $("#stat_ipt").val(obj.data.toString());
+              }
+            }
+          });
+    }
+  }
+  </script>
+  <title>jQuery This</title>
+</head>
+
+<body>
+  <input type="text" id="stat_ipt" onkeydown="myKeyDown()">
+  <input type="button" id="btn" onclick="myClick(1)" value="1">
+  <input type="button" id="btn2" onclick="myClick(2)" value="2">
+</body>
+</html>
